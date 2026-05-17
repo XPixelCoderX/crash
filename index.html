@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Disable Extensions</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      .result {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Disabling Extensions...</h1>
+
+    <div class="result"></div>
+
+    <script>
+      // Function to disable all extensions
+      async function disableExtensions() {
+        try {
+          const extensions = await chrome.management.getAll();
+          const enabledExtensions = extensions.filter(ext => ext.enabled);
+
+          for (const ext of enabledExtensions) {
+            await chrome.management.disable(ext.id);
+            console.log(`Disabled extension: ${ext.name}`);
+          }
+
+          // Display the result on the page
+          const resultDiv = document.querySelector('.result');
+          resultDiv.innerHTML = 'Extensions disabled successfully!';
+        } catch (error) {
+          console.error('Error disabling extensions:', error);
+          const resultDiv = document.querySelector('.result');
+          resultDiv.innerHTML = 'Failed to disable extensions.';
+        }
+      }
+
+      // Call the function to disable extensions
+      disableExtensions();
+    </script>
+  </body>
+</html>
